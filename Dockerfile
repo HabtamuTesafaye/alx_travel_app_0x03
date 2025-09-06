@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     netcat-openbsd \
-    && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/*
 
 # Create necessary directories
 RUN mkdir -p /app/logs /app/staticfiles
@@ -22,7 +22,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project files
 COPY . .
 
-# Make entrypoint scripts executable
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Make entrypoint scripts executable (if you have one)
 RUN chmod +x /app/entrypoint.sh || true
 
 # Set environment variables
@@ -33,4 +36,4 @@ ENV DJANGO_SETTINGS_MODULE=alx_travel_app.settings
 EXPOSE 8000
 
 # Default command
-CMD ["gunicorn", "alx_travel_app.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "alx_travel_app.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
