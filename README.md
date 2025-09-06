@@ -160,4 +160,49 @@ Uses Django’s built-in permission system. Example permissions:
 * `add_review`, `change_review`, `delete_review`, `view_review`
 * `add_payment`, `change_payment`, `view_payment`
 
+
+## 🚀 Deployment on Render
+
+1. **Connect Repository**
+
+   * Go to [Render Dashboard](https://render.com) and create a new **Web Service**.
+   * Select your repository (e.g., `alx_travel_app_0x03`) and the branch to deploy.
+
+2. **Environment**
+
+   * Choose **Docker** as the environment.
+   * Render will automatically build your Docker image using your `Dockerfile`.
+
+3. **Set Environment Variables**
+
+   * In Render’s **Environment** tab, add all variables listed in `.env_example`.
+   * Render uses these values at runtime; no need to expose secrets in the repo.
+
+4. **Build & Start**
+
+   * Render automatically runs `docker build` and `CMD ["gunicorn", "alx_travel_app.wsgi:application", "--bind", "0.0.0.0:8000"]`.
+   * Port `8000` is exposed; Render routes traffic externally.
+
+5. **Background Tasks (Optional)**
+
+   * If using Celery + RabbitMQ, add **Worker Services** in Render pointing to the same repo.
+   * Configure `CELERY_BROKER_URL` and `CELERY_RESULT_BACKEND` in environment variables.
+
+6. **Static Files**
+
+   * Already handled during Docker build with `python manage.py collectstatic`.
+   * Served in production via Whitenoise.
+
+7. **Automatic Deployment**
+
+   * Every push to the connected branch triggers a rebuild and redeploy.
+   * No manual steps required—Render handles the container lifecycle.
+
+## Accessing the App
+
+* **API root**: [https://alx-travel-app-03lu.onrender.com/](https://alx-travel-app-03lu.onrender.com/)
+* **Swagger Docs**: [https://alx-travel-app-03lu.onrender.com/swagger/](https://alx-travel-app-03lu.onrender.com/swagger/)
+* **Redoc Docs**: [https://alx-travel-app-03lu.onrender.com/redoc/](https://alx-travel-app-03lu.onrender.com/redoc/)
+* **Admin Panel**: [https://alx-travel-app-03lu.onrender.com/admin/](https://alx-travel-app-03lu.onrender.com/admin/)
+
 ---
