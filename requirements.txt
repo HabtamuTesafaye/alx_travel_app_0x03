@@ -10,9 +10,11 @@ click-plugins==1.1.1.2
 click-repl==0.3.0
 Django==5.2.4
 django-filter==25.1
+django-ratelimit==4.1.0
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
 drf-yasg==1.21.10
+gunicorn==23.0.0
 idna==3.10
 inflection==0.5.1
 kombu==5.5.4
@@ -21,6 +23,7 @@ prompt_toolkit==3.0.52
 PyJWT==2.9.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
+python-json-logger==3.3.0
 pytz==2025.2
 PyYAML==6.0.2
 rabbitmq-server==0.0.1
@@ -32,3 +35,4 @@ uritemplate==4.2.0
 urllib3==2.5.0
 vine==5.1.0
 wcwidth==0.2.13
+whitenoise==6.9.0

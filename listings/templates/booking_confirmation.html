@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Hotel Booking Confirmation</title>
+  <style type="text/css">
+    @media only screen and (max-width: 600px) {
+      .container { width: 100% !important; }
+      .responsive-img { width: 100% !important; height: auto !important; }
+      .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+      .mobile-center { text-align: center !important; }
+      .mobile-hide { display: none !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f5f7fa; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color:#333333; line-height:1.6;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f5f7fa">
+    <tr>
+      <td align="center" style="padding: 30px 10px;">
+        <table class="container" width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="border-radius: 12px; overflow: hidden; box-shadow: 0 5px 30px rgba(0,0,0,0.08);">
+          
+          <!-- Hero Image -->
+          <tr>
+            <td>
+              <img src="https://via.placeholder.com/600x250/1a73e8/ffffff?text=Your+Perfect+Stay+Awaits" alt="Luxury Hotel Stay" class="responsive-img" width="600" style="display:block; width:100%; max-width:100%; height:auto;">
+            </td>
+          </tr>
+          
+          <!-- Header -->
+          <tr>
+            <td style="padding: 30px 40px 20px; background-color: #ffffff;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="60" style="vertical-align: top;">
+                    <img src="https://via.placeholder.com/60x60/1a73e8/ffffff?text=H" alt="Hotel Logo" width="60" style="border-radius: 50%;">
+                  </td>
+                  <td style="padding-left: 15px;">
+                    <h1 style="font-size: 28px; font-weight: 700; color: #1a2b59; margin: 0; line-height: 1.2;">Booking Confirmed!</h1>
+                    <p style="font-size: 16px; color: #5f6368; margin: 8px 0 0; font-weight: 500;">Your dream getaway is all set</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Booking Details -->
+          <tr>
+            <td class="mobile-padding" style="padding: 0 40px 30px;">
+              <h2 style="color: #1a2b59; font-size: 22px; margin: 25px 0 15px; border-bottom: 2px solid #e8f0fe; padding-bottom: 10px;">Your Reservation</h2>
+              
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafd; border-radius: 10px; padding: 20px;">
+                <tr>
+                  <td width="30%" style="padding: 12px 0; font-weight: 600; color: #1a2b59;">Confirmation #</td>
+                  <td width="70%" style="padding: 12px 0; font-weight: 700; color: #1a73e8;">{{ booking.booking_id }}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #1a2b59;">Guest Name</td>
+                  <td style="padding: 12px 0;">{{ booking.guest.get_full_name|default:booking.guest.username }}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #1a2b59;">Check-in</td>
+                  <td style="padding: 12px 0;">{{ booking.start_date|date:"F j, Y" }} ({{ booking.start_date|time:"g:i A" }})</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #1a2b59;">Check-out</td>
+                  <td style="padding: 12px 0;">{{ booking.end_date|date:"F j, Y" }} ({{ booking.end_date|time:"g:i A" }})</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #1a2b59;">Room Type</td>
+                  <td style="padding: 12px 0;">{{ booking.listing.title }}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #1a2b59;">Guests</td>
+                  <td style="padding: 12px 0;">{{ booking.num_guests|default:"N/A" }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Summary Section -->
+          <tr>
+            <td class="mobile-padding" style="padding: 0 40px 25px;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); border-radius: 12px; overflow: hidden;">
+                <tr>
+                  <td style="padding: 25px; color: #ffffff;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="65%">
+                          <h3 style="font-size: 20px; margin: 0 0 10px; font-weight: 600;">Total Stay Cost</h3>
+                          <p style="font-size: 14px; opacity: 0.9; margin: 0;">{{ booking.get_nights }} Nights • {{ booking.listing.title }}</p>
+                        </td>
+                        <td width="35%" style="text-align: right;">
+                          <p style="font-size: 28px; font-weight: 700; margin: 0; line-height: 1.2;">{{ booking.total_price|floatformat:2 }}</p>
+                          <p style="font-size: 13px; opacity: 0.8; margin: 5px 0 0;">Includes taxes & fees</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Action Button -->
+          <tr>
+            <td style="padding: 0 40px 30px; text-align: center;">
+              <a href="{{ view_booking_url }}" style="background: linear-gradient(to right, #1a73e8, #0d47a1); color: #ffffff; font-size: 16px; text-decoration: none; padding: 14px 35px; display: inline-block; font-weight: 600; border-radius: 8px; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);">View Booking Details</a>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #1a2b59; padding: 35px 40px 25px; color: #ffffff; text-align: center; font-size: 12px; opacity: 0.8;">
+              © {{ now|date:"Y" }} Hotel Elite. This is an automated message. Please do not reply.
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

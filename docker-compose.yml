@@ -1,0 +1,74 @@
+services:
+  web:
+    build: .
+    command: ["gunicorn", "alx_travel_app.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+    volumes:
+      - staticfiles:/app/staticfiles
+      - logs:/app/logs
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+
+  celery:
+    build: .
+    command: ["/app/wait-for.sh", "rabbitmq", "celery", "-A", "alx_travel_app", "worker", "--loglevel=info"]
+    volumes:
+      - staticfiles:/app/staticfiles
+      - logs:/app/logs
+    env_file:
+      - .env
+    depends_on:
+      - web
+      - rabbitmq
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    user: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - jenkins-net
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+
+  ngrok:
+    image: ngrok/ngrok:3
+    command: ["ngrok", "http", "web:8000"]
+    ports:
+      - "4040:4040"
+    env_file:
+      - .env
+    depends_on:
+      - web
+
+volumes:
+  jenkins-data:
+  staticfiles:
+  logs:
+
+networks:
+  default:
+    name: alx_travel_app_0x03_default
+  jenkins-net:
+    name: jenkins-network
